@@ -170,7 +170,6 @@
   }
 
  async function sendFormData(form) {
-   debugger
     let formData = new FormData(form);
 
     try {
