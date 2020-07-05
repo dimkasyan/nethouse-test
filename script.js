@@ -24,7 +24,7 @@
     isError = false;
 
   function addSomeEventsListener(elem, events, handler) {
-    events.forEach((item) => elem.addEventListener(item, handler));
+    events.forEach(item => elem.addEventListener(item, handler));
   }
 
   function changePasteRegex(event, regEx) {
@@ -35,15 +35,15 @@
 
   addSomeEventsListener(inputPhone, ["paste", "input"], function (event) {
     let text = changePasteRegex(event, /[^\+\d+]/g);
-    return (this.value = text);
+    return this.value = text;
   });
 
   addSomeEventsListener(inputName, ["paste", "input"], function (event) {
     let text = changePasteRegex(event, /\d+/);
-    return (this.value = text);
+    return this.value = text;
   });
 
-  inputName.addEventListener("keydown", (event) => {
+  inputName.addEventListener("keydown", event => {
     if (event.keyCode === 46 ||
       event.keyCode === 8 ||
       event.keyCode === 9 ||
@@ -60,7 +60,7 @@
     }
   });
 
-  inputPhone.addEventListener("keydown", (event) => {
+  inputPhone.addEventListener("keydown", event => {
     if (event.keyCode === 46 ||
       event.keyCode === 8 ||
       event.keyCode == 9 ||
@@ -136,8 +136,8 @@
     return error;
   }
 
-  elements.forEach((element) => {
-    element.addEventListener("blur", (e) => {
+  elements.forEach(element => {
+    element.addEventListener("blur", e => {
       let formElement = e.target,
         property = formElement.getAttribute("name"),
         dataField = {};
