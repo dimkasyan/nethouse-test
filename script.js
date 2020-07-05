@@ -6,10 +6,10 @@
 
   let elements = Array.from(form.querySelectorAll(".form-control")),
     btnSendForm = document.getElementById("send_form"),
-	inputPhone = document.querySelector("input[name=phone]"),
-	inputName = document.querySelector("input[name=name]"),
-  notficationBar = document.querySelector(".notification-bar"),
-  notficationText = notficationBar.querySelector(".notification-text"),
+    inputPhone = document.querySelector("input[name=phone]"),
+    inputName = document.querySelector("input[name=name]"),
+    notficationBar = document.querySelector(".notification-bar"),
+    notficationText = notficationBar.querySelector(".notification-text"),
     regExName = /^[А-ЯA-Z][а-яa-zА-ЯA-Z\-]{0,}\s[А-ЯA-Z][а-яa-zА-ЯA-Z\-]{1,}(\s[А-ЯA-Z][а-яa-zА-ЯA-Z\-]{1,})?$/,
     regExMail = /^[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@gmail.com/,
     regExPhone = /(\+7|8|07)\d{10}/,
@@ -21,58 +21,68 @@
       "Укажите телефон",
       "Неверный формат телефона",
     ],
-	isError = false;
+    isError = false;
 
-  function addSomeEventsListener(elem,events,handler) {
-    events.forEach(item => elem.addEventListener(item, handler))
+  function addSomeEventsListener(elem, events, handler) {
+    events.forEach((item) => elem.addEventListener(item, handler));
   }
 
   function changePasteRegex(event, regEx) {
-     return event.type === "paste" ? event.clipboardData.getData("text/plain").replace(regEx, '') : event.target.value.replace(regEx, '');
+    return event.type === "paste"
+      ? event.clipboardData.getData("text/plain").replace(regEx, "")
+      : event.target.value.replace(regEx, "");
   }
 
-  addSomeEventsListener(inputPhone, ["paste", "input"],  function(event) {
-    let text = changePasteRegex(event, /[^\+\d+]/g)
-    return this.value = text;
-  })
-
-  addSomeEventsListener(inputName, ["paste", "input"], function(event) {
-    let text = changePasteRegex(event, /\d+/)
-    return this.value = text;
-  })
-
-  inputName.addEventListener("keydown", event => {
-	if (event.keyCode === 46 || event.keyCode === 8 || event.keyCode === 9 || event.keyCode === 27 ||
-		((event.keyCode === 86 || event.keyCode === 67) && event.ctrlKey === true) ||
-		(event.keyCode >= 35 && event.keyCode <= 39)) {
-
-		return;
-	} else {
-		if (!(event.keyCode >= 65 && event.keyCode < 96) && (event.keyCode !== 32 && event.keyCode !== 0)) {
-			event.preventDefault();
-		}
-	}
+  addSomeEventsListener(inputPhone, ["paste", "input"], function (event) {
+    let text = changePasteRegex(event, /[^\+\d+]/g);
+    return (this.value = text);
   });
 
-  inputPhone.addEventListener("keydown", event => {
-	if ( event.keyCode === 46 || event.keyCode === 8 || event.keyCode == 9 || event.keyCode === 27 ||  event.keyCode === 107 ||
-		((event.keyCode === 86 || event.keyCode === 67) && event.ctrlKey === true) ||
-		(event.keyCode >= 35 && event.keyCode <= 39) ||
-		(event.keyCode === 187 || event.keyCode === 107)) {
+  addSomeEventsListener(inputName, ["paste", "input"], function (event) {
+    let text = changePasteRegex(event, /\d+/);
+    return (this.value = text);
+  });
 
-		return;
-	} else {
-		if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105 )) {
-			event.preventDefault();
-		}
-	}
+  inputName.addEventListener("keydown", (event) => {
+    if (event.keyCode === 46 ||
+      event.keyCode === 8 ||
+      event.keyCode === 9 ||
+      event.keyCode === 27 ||
+      ((event.keyCode === 86 || event.keyCode === 67) &&
+        event.ctrlKey === true) ||
+      (event.keyCode >= 35 && event.keyCode <= 39)) {
+
+      return;
+    } else {
+      if (!(event.keyCode >= 65 && event.keyCode < 96) && event.keyCode !== 32 && event.keyCode !== 0) {
+        event.preventDefault();
+      }
+    }
+  });
+
+  inputPhone.addEventListener("keydown", (event) => {
+    if (event.keyCode === 46 ||
+      event.keyCode === 8 ||
+      event.keyCode == 9 ||
+      event.keyCode === 27 ||
+      event.keyCode === 107 ||
+      ((event.keyCode === 86 || event.keyCode === 67) &&
+        event.ctrlKey === true) ||
+      (event.keyCode >= 35 && event.keyCode <= 39) ||
+      event.keyCode === 187 ||
+      event.keyCode === 107) {
+
+      return;
+    } else {
+      if ((event.keyCode < 48 || event.keyCode > 57) && (event.keyCode < 96 || event.keyCode > 105)) {
+        event.preventDefault();
+      }
+    }
   });
 
   btnSendForm.addEventListener("click", validForm);
 
-  form.addEventListener(
-    "focus",
-    () => {
+  form.addEventListener("focus", () => {
       let element = document.activeElement;
       if (element !== btnSendForm) {
         cleanError(element);
@@ -83,15 +93,15 @@
 
   function validForm(e) {
     e.preventDefault();
-	let formVal = getFormData(form), error;
+    let formVal = getFormData(form), error;
 
-	Object.keys(formVal).forEach(key => {
-		error = getError(formVal, key);
-		if (error.length != 0) {
-			isError = true;
-			showError(key, error);
-		}}
-	);
+    Object.keys(formVal).forEach((key) => {
+      error = getError(formVal, key);
+      if (error.length != 0) {
+        isError = true;
+        showError(key, error);
+      }
+    });
 
     if (!isError) {
       sendFormData(form);
@@ -127,7 +137,7 @@
   }
 
   elements.forEach((element) => {
-    element.addEventListener("blur", e => {
+    element.addEventListener("blur", (e) => {
       let formElement = e.target,
         property = formElement.getAttribute("name"),
         dataField = {};
@@ -169,36 +179,36 @@
     return controls;
   }
 
- async function sendFormData(form) {
+  async function sendFormData(form) {
     let formData = new FormData(form);
 
     try {
-      let response = await fetch('/article/formdata/post/user', {
-        method: 'POST',
-        body: formData
+      let response = await fetch("/article/formdata/post/user", {
+        method: "POST",
+        body: formData,
       });
 
       let result = await response.json();
 
       notficationBar.classList.add("is-show");
-      notficationText.textContent = 'Форма успешно отправлена!';
+      notficationText.textContent = "Форма успешно отправлена!";
 
       setTimeout(() => {
         notficationBar.classList.remove("is-show");
-        notficationText.textContent = '';
+        notficationText.textContent = "";
       }, 7500);
 
       return result;
     } catch (e) {
-      notficationBar.classList.add("is-error","is-show");
-      notficationText.textContent = `Форма не отправлена из-за ошибки: ${e}`
+      notficationBar.classList.add("is-error", "is-show");
+      notficationText.textContent = `Форма не отправлена из-за ошибки: ${e}`;
 
       setTimeout(() => {
-        notficationBar.classList.remove("is-error","is-show");
-        notficationText.textContent = '';
+        notficationBar.classList.remove("is-error", "is-show");
+        notficationText.textContent = "";
       }, 7500);
 
-      console.error(`Error request : ${e}`)
+      console.error(`Error request : ${e}`);
     }
   }
 })();
